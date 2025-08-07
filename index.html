@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Ten Dispatches — Scrollytelling</title>
+  <script src="https://unpkg.com/scrollama"></script>
+  <style>
+    body { font-family: Georgia, serif; line-height: 1.6; margin: 0; padding: 0; }
+    .step { margin: 0 auto; padding: 100vh 20px; max-width: 600px; opacity: 0.5; transition: opacity 0.3s; }
+    .step.is-active { opacity: 1; }
+    .graphic { position: sticky; top: 20px; height: 60vh; background: #f3f3f3; margin-bottom: 50vh; padding: 10px; }
+  </style>
+</head>
+<body>
+
+<div class="graphic" id="graphic">—</div>
+
+<div id="scrolly">
+  <div class="step">Speaker A: But there’s still this tension, right? …</div>
+  <div class="step">Speaker B: Yes. …</div>
+  <!-- Continue with remaining conversation segments -->
+  <div class="step">Dispatch 10: “Yes, I’m still among other things a Marxist.”</div>
+</div>
+
+<script>
+  const scroller = scrollama();
+
+  scroller
+    .setup({ step: '.step', offset: 0.5 })
+    .onStepEnter(response => {
+      document.querySelectorAll('.step').forEach(s => s.classList.remove('is-active'));
+      response.element.classList.add('is-active');
+      document.getElementById('graphic').innerText = `Section ${response.index + 1}`;
+    });
+
+  window.addEventListener('resize', scroller.resize);
+</script>
+
+</body>
+</html>
