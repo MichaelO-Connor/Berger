@@ -2,84 +2,108 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Ten Dispatches — Berger and Jameson</title>
+  <title>Map vs Signs — Berger & Conversation</title>
+  <script src="https://unpkg.com/scrollama"></script>
   <style>
     body {
-      font-family: Georgia, serif;
-      line-height: 1.6;
       margin: 0;
       padding: 0;
-      background-color: #fff;
+      font-family: Georgia, serif;
+      background: #fff;
       color: #111;
+      line-height: 1.7;
     }
 
-    .scrolly {
-      max-width: 900px;
+    #scrolly {
+      max-width: 1000px;
       margin: 0 auto;
       padding: 4rem 1rem;
     }
 
+    .step {
+      margin-bottom: 70vh;
+      opacity: 0.5;
+      transition: opacity 0.5s ease;
+    }
+
+    .step.is-active {
+      opacity: 1;
+    }
+
     .intro {
-      font-style: italic;
+      font-size: 1.2rem;
       text-align: center;
-      font-size: 1.4rem;
-      margin-bottom: 4rem;
+      margin-bottom: 6rem;
+      font-style: italic;
     }
 
-    .dispatch-pair {
+    .quote-container {
       display: flex;
-      flex-direction: row;
-      gap: 2rem;
       justify-content: space-between;
-      margin-bottom: 4rem;
+      align-items: flex-start;
+      gap: 2rem;
+      min-height: 50vh;
     }
 
-    .dispatch {
-      flex: 1;
-      padding: 1rem;
+    .quote-box {
+      width: 48%;
       background: #f9f9f9;
-      border-left: 4px solid #999;
+      border-left: 5px solid #999;
+      padding: 2rem;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
 
-    .commentary {
-      max-width: 700px;
-      margin: 2rem auto;
-    }
-
-    p {
-      margin-bottom: 1.4rem;
+    .quote-box.right {
+      margin-left: auto;
     }
   </style>
 </head>
 <body>
-  <div class="scrolly">
 
-    <div class="intro">
-      <p>Do you want to read the first one?<br>
-      No, I think you should read the first. I can read the second one.</p>
-    </div>
+<div id="scrolly">
 
-    <div class="dispatch-pair">
-      <div class="dispatch">
-        <h3>(1)</h3>
-        <p>Somebody inquires: are you still a Marxist? Never before has the devastation caused by the pursuit of profit, as defined by capitalism, been more extensive than it is today. Almost everybody knows this. How then is it possible not to heed Marx, who prophesied and analysed the devastation? The answer might be that people, many people, have lost all their political bearings. Mapless, they do not know where they are heading.</p>
+  <section class="step intro">
+    <p>Do you want to read the first one?<br>No, I think you should read the first. I can read the second one.</p>
+  </section>
+
+  <section class="step">
+    <div class="quote-container">
+      <div class="quote-box">
+        <p><strong>(1)</strong></p>
+        <p>Somebody inquires: are you still a marxist? Never before has the devastation caused by the pursuit of profit, as defined by capitalism, been more extensive than it is today. Almost everybody knows this. How then is it possible not to heed Marx, who prophesied and analysed the devastation? The answer might be that people, many people, have lost all their political bearings. Mapless, they do not know where they are heading.</p>
       </div>
+    </div>
+  </section>
 
-      <div class="dispatch">
-        <h3>(2)</h3>
-        <p>Every day people follow signs pointing to some place that is not their home but a chosen destination. Road signs, airport embarkation signs, terminal signs. Some are making their journeys for pleasure, others for business, many out of loss or despair. On arrival they come to realise they are not in the place indicated by the signs they followed...</p>
+  <section class="step">
+    <div class="quote-container">
+      <div class="quote-box right">
+        <p><strong>(2)</strong></p>
+        <p>Every day people follow signs pointing to some place that is not their home but a chosen destination. Road signs, airport embarkation signs, terminal signs. Some are making their journeys for pleasure, others for business, many out of loss or despair. On arrival they come to realise they are not in the place indicated by the signs they followed. Where they now find themselves has the correct latitude, longitude, local time, currency, yet it does not have the specific gravity of the destination they chose.</p>
+
         <p>They are beside the place they chose to come to. The distance that separates them from it is incalculable. Maybe it’s only the width of a thoroughfare, maybe it’s a world away. The place has lost what made it a destination. It has lost its territory of experience.</p>
+
         <p>Sometimes a few of these travellers undertake a private journey and find the place they wished to reach, which is often harsher than they foresaw, although they discover it with boundless relief. Many never make it. They accept the signs they follow and it’s as if they don’t travel, as if they always remain where they already are.</p>
       </div>
     </div>
+  </section>
 
-    <div class="commentary">
-      <p>I think it’s funny how Berger really captures this idea that our visual life is completely preoccupied with nudging and directing. In AI, there’s this concept of nudge technology, where everything you interact with online is constantly pushing you toward certain behaviours...</p>
-      <p>Berger seems to draw a distinction between having a map and having signs, and in doing so, he highlights the problem of direction without orientation. The people he describes are mapless—they don’t know where they are heading, but they keep following signs anyway.</p>
-      <p>This connects with Jameson’s idea that there should be some kind of cognitive map—not just an accumulation of isolated signs, but a deeper framework that provides meaningful content...</p>
-      <p>...Berger, at the very least, gives you something to follow. And there’s also a goal, right? Like, I don’t know, I feel like with Berger, there’s a sense of ‘I want to be looking at donkeys in a field.’</p>
-      <p>Right. And then, in dispatch ten, Berger closes with, ‘Yes, I’m still, among other things, a Marxist.’ So, at the very least, he has a direction.</p>
-    </div>
-  </div>
+</div>
+
+<script>
+  const scroller = scrollama();
+
+  scroller
+    .setup({ step: '.step', offset: 0.5 })
+    .onStepEnter(response => {
+      document.querySelectorAll('.step').forEach(s => s.classList.remove('is-active'));
+      response.element.classList.add('is-active');
+    });
+
+  window.addEventListener('resize', scroller.resize);
+</script>
+
 </body>
 </html>
