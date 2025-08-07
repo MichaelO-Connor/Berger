@@ -38,6 +38,7 @@
     }
 
     .step {
+      display: block;
       margin-bottom: 60vh;
       opacity: 0.5;
       transition: opacity 0.5s ease;
@@ -75,15 +76,14 @@
     .map-container img {
       max-width: 100%;
       height: auto;
-      opacity: 0.8;
-      border: none;
+      opacity: 0.9;
     }
 
     .dispatch-number {
       font-style: italic;
       margin-bottom: 1rem;
       font-size: 1rem;
-      color: #555;
+      color: #666;
     }
 
     .fullwidth {
@@ -99,11 +99,13 @@
 </head>
 <body>
 
+<!-- Intro Dialogue -->
 <div id="intro">
   <p>Do you want to read the first one?</p>
   <p>No, I think you should read the first. I can read the second one.</p>
 </div>
 
+<!-- Dispatches Appear After Scroll -->
 <div id="scrolly">
 
   <section class="step">
@@ -144,11 +146,13 @@
 
   window.addEventListener('resize', scroller.resize);
 
-  // Reveal #scrolly after scroll
+  // Reveal #scrolly after intro scrolls out of view
   window.addEventListener('scroll', () => {
     const intro = document.getElementById('intro');
     const scrolly = document.getElementById('scrolly');
-    if (window.scrollY > window.innerHeight * 0.5) {
+    const introBottom = intro.getBoundingClientRect().bottom;
+
+    if (introBottom <= 0) {
       intro.style.display = 'none';
       scrolly.style.display = 'block';
     }
