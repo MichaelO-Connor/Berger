@@ -38,16 +38,15 @@
       margin-bottom: 1.4em;
     }
 
-    #visual-container {
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+    .wave-wrapper {
+      overflow: hidden;
+      margin: 2em 0;
     }
 
-    #visual {
-      width: 80%;
-      max-width: 400px;
+    .wave-wrapper svg {
+      width: 100%;
+      height: 80px;
+      display: block;
     }
   </style>
 </head>
@@ -68,27 +67,27 @@
     <p>The idea that ways of representing things have a history is connected in my head to what Jameson’s saying. He’s saying we need new forms to get started.</p>
   </section>
 
-  <!-- BEGIN INTERACTIVE VISUAL STEPS -->
   <section class="step">
-    <div id="visual-container">
-      <svg id="visual" viewBox="0 0 200 200">
-        <circle id="circle" cx="100" cy="100" r="0" stroke="black" stroke-width="2" fill="none" />
-        <circle id="dot" cx="100" cy="50" r="0" fill="black" />
-        <path id="loop" d="" stroke="gray" stroke-width="2" fill="none" />
-        <g id="layers" opacity="0">
-          <rect x="40" y="120" width="120" height="10" fill="#ccc" />
-          <rect x="40" y="135" width="120" height="10" fill="#bbb" />
-          <rect x="40" y="150" width="120" height="10" fill="#aaa" />
-        </g>
+    <p>I don’t know enough about it, but—do you have to create some kind of totality in order to position a point of departure, whatever that point might be? And does there have to be some kind of cyclicality?</p>
+
+    <div class="wave-wrapper">
+      <svg viewBox="0 0 1200 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0 50 Q 150 0 300 50 T 600 50 T 900 50 T 1200 50"
+              fill="none" stroke="#888" stroke-width="2">
+          <animateTransform attributeName="transform"
+                            attributeType="XML"
+                            type="translate"
+                            from="0"
+                            to="-300"
+                            dur="4s"
+                            repeatCount="indefinite"/>
+        </path>
       </svg>
     </div>
-  </section>
 
-  <section class="step">Do you have to create some kind of totality in order to position a point of departure, whatever that point might be?</section>
-  <section class="step">Point of departure...</section>
-  <section class="step">And does there have to be some kind of cyclicality?</section>
-  <section class="step">Someone like Foucault does that very well...</section>
-  <!-- END INTERACTIVE VISUAL STEPS -->
+    <p>Or—I don’t know, how is he suggesting that there has to be a sense of wholeness through form?</p>
+    <p>Someone like Foucault does that very well when he creates a mode of analysis that is, quite literally, a map of history and time. With archaeology, you have surface-level structures—language—and then deeper epistemic formations, layers of meaning beneath.</p>
+  </section>
 
   <section class="step">
     <p>But the issue with that is that he was accused—or at least perceived—as creating a system of totality and trapping himself within it. That’s a critique that came from Edward Said, who argued that you don’t need totality, you don’t need a cognitive map per se.</p>
@@ -127,30 +126,6 @@
     .onStepEnter(response => {
       document.querySelectorAll('.step').forEach(s => s.classList.remove('is-active'));
       response.element.classList.add('is-active');
-
-      // Animation logic
-      const circle = document.getElementById('circle');
-      const dot = document.getElementById('dot');
-      const loop = document.getElementById('loop');
-      const layers = document.getElementById('layers');
-
-      switch (response.index) {
-        case 3:
-          if (circle) circle.setAttribute('r', '80');
-          if (dot) dot.setAttribute('r', '0');
-          if (loop) loop.setAttribute('d', '');
-          if (layers) layers.setAttribute('opacity', '0');
-          break;
-        case 4:
-          if (dot) dot.setAttribute('r', '4');
-          break;
-        case 5:
-          if (loop) loop.setAttribute('d', 'M60,100 q40,-60 80,0 q-40,60 -80,0');
-          break;
-        case 6:
-          if (layers) layers.setAttribute('opacity', '1');
-          break;
-      }
     });
 
   window.addEventListener('resize', scroller.resize);
