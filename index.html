@@ -14,27 +14,42 @@
       line-height: 1.75;
     }
 
+    /* Intro overlay */
     #intro {
+      position: fixed;
+      inset: 0;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      height: 100vh;
       text-align: center;
       padding: 2rem;
+      background: #fdfcf9;
+      z-index: 10;
+      transition: opacity 500ms ease;
     }
-
     #intro p {
       font-size: 1.5rem;
       max-width: 600px;
-      margin-bottom: 1rem;
+      margin: 0 0 1rem 0;
+    }
+    .scroll-cue {
+      margin-top: 1.5rem;
+      font-size: 0.95rem;
+      opacity: 0.7;
+      user-select: none;
+    }
+    .hidden {
+      opacity: 0;
+      pointer-events: none;
+      /* after fade we’ll also set display:none in JS */
     }
 
+    /* Main content is present from the start so the page can scroll */
     #scrolly {
       max-width: 1000px;
       margin: 0 auto;
-      padding: 4rem 1rem;
-      display: none;
+      padding: 6rem 1rem 4rem;
     }
 
     .step {
@@ -43,7 +58,6 @@
       opacity: 0.5;
       transition: opacity 0.5s ease;
     }
-
     .step.is-active {
       opacity: 1;
     }
@@ -61,10 +75,7 @@
       flex: 1 1 45%;
       font-size: 1.1rem;
     }
-
-    .dispatch-text p {
-      margin-bottom: 1.2em;
-    }
+    .dispatch-text p { margin-bottom: 1.2em; }
 
     .map-container {
       flex: 1 1 45%;
@@ -72,7 +83,6 @@
       align-items: center;
       justify-content: center;
     }
-
     .map-container img {
       max-width: 100%;
       height: auto;
@@ -91,21 +101,19 @@
       margin: 0 auto;
       font-size: 1.1rem;
     }
-
-    .fullwidth p {
-      margin-bottom: 1.4em;
-    }
+    .fullwidth p { margin-bottom: 1.4em; }
   </style>
 </head>
 <body>
 
-<!-- Intro Dialogue -->
+<!-- Intro overlay (fixed) -->
 <div id="intro">
   <p>Do you want to read the first one?</p>
   <p>No, I think you should read the first. I can read the second one.</p>
+  <div class="scroll-cue">Scroll ↓ or click to continue</div>
 </div>
 
-<!-- Dispatches Appear After Scroll -->
+<!-- Content is in the flow from the beginning so the page can scroll -->
 <div id="scrolly">
 
   <section class="step">
@@ -131,31 +139,43 @@
 
 </div>
 
+<script src="https://unpkg.com/scrollama"></script>
 <script>
+  // Scrollama fade-in
   const scroller = scrollama();
-
   scroller
-    .setup({
-      step: '.step',
-      offset: 0.5
-    })
-    .onStepEnter(response => {
+    .setup({ step: '.step', offset: 0.5 })
+    .onStepEnter(res => {
       document.querySelectorAll('.step').forEach(s => s.classList.remove('is-active'));
-      response.element.classList.add('is-active');
+      res.element.classList.add('is-active');
     });
-
   window.addEventListener('resize', scroller.resize);
 
-  // Reveal #scrolly after intro scrolls out of view
-  window.addEventListener('scroll', () => {
-    const intro = document.getElementById('intro');
-    const scrolly = document.getElementById('scrolly');
-    const introBottom = intro.getBoundingClientRect().bottom;
+  // Intro removal: on first interaction OR when intro leaves view
+  const intro = document.getElementById('intro');
+  function hideIntro() {
+    if (!intro) return;
+    intro.classList.add('hidden');
+    // remove from flow after fade
+    setTimeout(() => { intro.style.display = 'none'; }, 550);
+    // remove listeners after first run
+    window.removeEventListener('wheel', hideIntroOnce, {passive:true});
+    window.removeEventListener('touchstart', hideIntroOnce, {passive:true});
+    window.removeEventListener('keydown', hideIntroOnce);
+    intro.removeEventListener('click', hideIntro);
+  }
+  function hideIntroOnce() { hideIntro(); }
 
-    if (introBottom <= 0) {
-      intro.style.display = 'none';
-      scrolly.style.display = 'block';
-    }
+  // Hide on any of these:
+  window.addEventListener('wheel', hideIntroOnce, {passive:true});
+  window.addEventListener('touchstart', hideIntroOnce, {passive:true});
+  window.addEventListener('keydown', hideIntroOnce);
+  intro.addEventListener('click', hideIntro);
+
+  // Also hide if user actually scrolls past it (in case of very tall screens)
+  window.addEventListener('scroll', () => {
+    const rect = intro.getBoundingClientRect();
+    if (rect.bottom <= 0) hideIntro();
   });
 </script>
 
